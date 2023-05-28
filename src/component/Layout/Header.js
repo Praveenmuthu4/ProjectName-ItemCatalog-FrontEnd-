@@ -1,10 +1,10 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment } from "react";
 import "../../App.css";
 import { Link } from "react-router-dom";
-import { CartStateContext } from "../context/cartContext";
+import { useCartState } from "../context/context";
 
 export default function Header() {
-  const { items } = useContext(CartStateContext);
+  const { cartItems } = useCartState();
 
   return (
     <Fragment>
@@ -43,7 +43,7 @@ export default function Header() {
               Cart
             </span>
             <span className="ml-1" id="cart_count">
-              {items.length}
+              {cartItems.length}
             </span>
           </Link>
         </div>

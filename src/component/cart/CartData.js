@@ -9,7 +9,7 @@ import {
 } from "../context/cartContext";
 import axios from "axios";
 import { API } from "../../global";
-import { useCartState } from "../context/context";
+import { useCartDispatch, useCartState } from "../context/context";
 import { Carousel } from "react-bootstrap";
 
 export default function CartData() {
@@ -25,8 +25,10 @@ export default function CartData() {
     });
   }, []);
 
-  const handleRemove = (productId) => {
-    return removeFromCart(dispatch, productId);
+  const cartDispatch = useCartDispatch();
+
+  const handleRemove = (product) => {
+    cartDispatch({ type: "REMOVE_FROM_CART", payload: { product } });
   };
 
   const handleProceedCheckout = () => {

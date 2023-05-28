@@ -36,19 +36,6 @@ export default function ViewProduct({ match }) {
       setProducts(res.data.product);
     });
   }, []);
-
-  // const [isAdded, setIsAdded] = useState(false);
-  // const dispatch = useContext(CartDispatchContext);
-  // const { data } = products;
-
-  // const handleAddToCart = () => {
-  //   const products = { ...data, quantity: 1 };
-  //   addToCart(dispatch, products);
-  //   setIsAdded(true);
-  //   setTimeout(() => {
-  //     setIsAdded(false);
-  //   }, 3500);
-  // };
   const navigate = useNavigate();
   const cartDispatch = useCartDispatch();
 
