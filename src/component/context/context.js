@@ -1,0 +1,36 @@
+import React, { createContext, useContext, useReducer } from "react";
+
+const CartStateContext = createContext();
+const CartDispatchContext = createContext();
+
+const cartReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_TO_CART":
+      return {
+        ...state,
+        cartItems: [...state.cartItems, action.payload.product],
+      };
+    // Add other cart actions as needed
+    default:
+      throw new Error(`Unhandled action type: ${action.type}`);
+  }
+};
+
+const CartProviderFunction = ({ children }) => {
+  const [state, dispatch] = useReducer(cartReducer, {
+    cartItems: [],
+  });
+
+  return (
+    <CartStateContext.Provider value={state}>
+      <CartDispatchContext.Provider value={dispatch}>
+        {children}
+      </CartDispatchContext.Provider>
+    </CartStateContext.Provider>
+  );
+};
+
+const useCartState = () => useContext(CartStateContext);
+const useCartDispatch = () => useContext(CartDispatchContext);
+
+export { CartProviderFunction, useCartState, useCartDispatch };

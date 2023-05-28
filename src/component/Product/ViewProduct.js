@@ -1,10 +1,11 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../global";
 import HeaderData from "../Layout/HeaderData";
 import { Carousel } from "react-bootstrap";
 import { CartDispatchContext, addToCart } from "../context/cartContext";
+import { useCartDispatch } from "../context/context";
 
 export default function ViewProduct({ match }) {
   const { id } = useParams();
@@ -36,17 +37,24 @@ export default function ViewProduct({ match }) {
     });
   }, []);
 
-  const [isAdded, setIsAdded] = useState(false);
-  const dispatch = useContext(CartDispatchContext);
-  const { data } = products;
+  // const [isAdded, setIsAdded] = useState(false);
+  // const dispatch = useContext(CartDispatchContext);
+  // const { data } = products;
 
-  const handleAddToCart = () => {
-    const products = { ...data, quantity: 1 };
-    addToCart(dispatch, products);
-    setIsAdded(true);
-    setTimeout(() => {
-      setIsAdded(false);
-    }, 3500);
+  // const handleAddToCart = () => {
+  //   const products = { ...data, quantity: 1 };
+  //   addToCart(dispatch, products);
+  //   setIsAdded(true);
+  //   setTimeout(() => {
+  //     setIsAdded(false);
+  //   }, 3500);
+  // };
+  const navigate = useNavigate();
+  const cartDispatch = useCartDispatch();
+
+  const handleAddToCart = (product) => {
+    cartDispatch({ type: "ADD_TO_CART", payload: { product } });
+    navigate("/cart");
   };
 
   return (
@@ -105,9 +113,10 @@ export default function ViewProduct({ match }) {
             id="cart_btn"
             className="btn btn-primary d-inline ml-4"
             disabled={products.stock === 0}
-            onClick={handleAddToCart}
+            onClick={() => handleAddToCart(products)}
           >
-            {!isAdded ? "ADD TO CART" : "✔ ADDED"}
+            {/* {!isAdded ? "ADD TO CART" : "✔ ADDED"} */}
+            Add
           </button>
 
           <hr />
