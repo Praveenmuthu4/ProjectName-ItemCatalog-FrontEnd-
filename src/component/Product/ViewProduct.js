@@ -1,10 +1,9 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../global";
 import HeaderData from "../Layout/HeaderData";
 import { Carousel } from "react-bootstrap";
-import { CartDispatchContext, addToCart } from "../context/cartContext";
 import { useCartDispatch } from "../context/context";
 
 export default function ViewProduct({ match }) {
@@ -102,8 +101,7 @@ export default function ViewProduct({ match }) {
             disabled={products.stock === 0}
             onClick={() => handleAddToCart(products)}
           >
-            {/* {!isAdded ? "ADD TO CART" : "✔ ADDED"} */}
-            Add
+            Add to cart
           </button>
 
           <hr />
