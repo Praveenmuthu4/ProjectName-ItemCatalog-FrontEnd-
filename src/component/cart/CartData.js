@@ -9,6 +9,8 @@ import {
 } from "../context/cartContext";
 import axios from "axios";
 import { API } from "../../global";
+import { useCartState } from "../context/context";
+import { Carousel } from "react-bootstrap";
 
 export default function CartData() {
   const { items } = useContext(CartStateContext);
@@ -42,30 +44,38 @@ export default function CartData() {
     setQuantity((prevQuantity) => prevQuantity - 1);
   };
 
+  const { cartItems } = useCartState();
+
   return (
     <Fragment>
       <HeaderData title={"Your Cart"} />
-      {items.length === 0 ? (
+      {cartItems.length === 0 ? (
         <h2 className="mt-5">Your Cart is Empty</h2>
       ) : (
         <Fragment>
           <h2 className="mt-5">
-            Your Cart: <b>{items.length} item</b>
+            Your Cart: <b>{cartItems.length} item</b>
           </h2>
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8">
-              {items.map((item) => (
+              {cartItems.map((item) => (
                 <Fragment key={item._id}>
                   <hr />
                   <div className="cart-item">
                     <div className="row">
                       <div className="col-4 col-lg-3">
-                        <img
-                          src={item.image}
-                          alt={item.product}
-                          height="90"
-                          width="115"
-                        />
+                        <Carousel pause="hover">
+                          {item.image &&
+                            item.image.map((img) => (
+                              <Carousel.Item key={img.public_id}>
+                                <img
+                                  className="d-block w-100"
+                                  src={img.url}
+                                  alt={products.title}
+                                />
+                              </Carousel.Item>
+                            ))}
+                        </Carousel>
                       </div>
 
                       <div className="col-5 col-lg-3">

@@ -8,7 +8,6 @@ import CartData from "./component/cart/CartData";
 import AuthProvider from "./component/context/authContext";
 import CartProvider from "./component/context/cartContext";
 import { CartProviderFunction } from "./component/context/context";
-import CartPage from "./component/cart/CartStore";
 
 function App() {
   return (
