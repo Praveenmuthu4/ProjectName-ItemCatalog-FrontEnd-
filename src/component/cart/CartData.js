@@ -11,6 +11,7 @@ import {
   CartDispatchContext,
   CartStateContext,
   removeFromCart,
+  toggleCartPopup,
 } from "../context/cartContext";
 import axios from "axios";
 import { API } from "../../global";
@@ -31,13 +32,6 @@ export default function CartData() {
     toggleCartPopup(dispatch);
     navigate("/checkout");
   };
-
-  useEffect(() => {
-    axios.get(`${API}/api/product/${id}`).then((res) => {
-      setProducts(res.data.product);
-      console.log(res.data.product);
-    });
-  }, []);
 
   const increaseQty = () => {
     const count = document.querySelector(".count");
