@@ -1,11 +1,5 @@
-import React, {
-  Fragment,
-  useState,
-  useContext,
-  createContext,
-  useEffect,
-} from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { Fragment, useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import HeaderData from "../Layout/HeaderData";
 import {
   CartDispatchContext,
@@ -22,7 +16,12 @@ export default function CartData() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const { id } = useParams();
+
+  useEffect(() => {
+    axios.get(`${API}/api/product`).then((res) => {
+      setProducts(res.data.products);
+    });
+  }, []);
 
   const handleRemove = (productId) => {
     return removeFromCart(dispatch, productId);
@@ -68,7 +67,7 @@ export default function CartData() {
                 <Fragment>
                   <hr />
 
-                  <div className="cart-item" key={item.product}>
+                  <div className="cart-item" key={item._id}>
                     <div className="row">
                       <div className="col-4 col-lg-3">
                         <img
@@ -101,7 +100,7 @@ export default function CartData() {
                           <input
                             type="number"
                             className="form-control count d-inline"
-                            value={item.quantity}
+                            value={quantity}
                             readOnly
                           />
 
