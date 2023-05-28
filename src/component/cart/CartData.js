@@ -33,21 +33,13 @@ export default function CartData() {
   };
 
   const increaseQty = () => {
-    const count = document.querySelector(".count");
-
-    if (count.valueAsNumber >= products.stock) return;
-
-    const qty = count.valueAsNumber + 1;
-    setQuantity(qty);
+    if (quantity >= products.stock) return;
+    setQuantity((prevQuantity) => prevQuantity + 1);
   };
 
   const decreaseQty = () => {
-    const count = document.querySelector(".count");
-
-    if (count.valueAsNumber <= 1) return;
-
-    const qty = count.valueAsNumber - 1;
-    setQuantity(qty);
+    if (quantity <= 1) return;
+    setQuantity((prevQuantity) => prevQuantity - 1);
   };
 
   return (
@@ -60,14 +52,12 @@ export default function CartData() {
           <h2 className="mt-5">
             Your Cart: <b>{items.length} item</b>
           </h2>
-
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8">
               {items.map((item) => (
-                <Fragment>
+                <Fragment key={item._id}>
                   <hr />
-
-                  <div className="cart-item" key={item._id}>
+                  <div className="cart-item">
                     <div className="row">
                       <div className="col-4 col-lg-3">
                         <img
