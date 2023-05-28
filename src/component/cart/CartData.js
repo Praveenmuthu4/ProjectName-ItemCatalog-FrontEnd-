@@ -1,19 +1,12 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderData from "../Layout/HeaderData";
-import {
-  CartDispatchContext,
-  CartStateContext,
-  removeFromCart,
-  toggleCartPopup,
-} from "../context/cartContext";
+import { CartDispatchContext, toggleCartPopup } from "../context/cartContext";
 import axios from "axios";
 import { API } from "../../global";
 import { useCartDispatch, useCartState } from "../context/context";
-import { Carousel } from "react-bootstrap";
 
 export default function CartData() {
-  const { items } = useContext(CartStateContext);
   const dispatch = useContext(CartDispatchContext);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -66,22 +59,19 @@ export default function CartData() {
                   <div className="cart-item">
                     <div className="row">
                       <div className="col-4 col-lg-3">
-                        <Carousel pause="hover">
-                          {item.image &&
-                            item.image.map((img) => (
-                              <Carousel.Item key={img.public_id}>
-                                <img
-                                  className="d-block w-100"
-                                  src={img.url}
-                                  alt={products.title}
-                                />
-                              </Carousel.Item>
-                            ))}
-                        </Carousel>
+                        {item.image &&
+                          item.image.map((img) => (
+                            <img
+                              className="d-block w-100"
+                              src={img.url}
+                              alt={item._id}
+                              key={img.public_id}
+                            />
+                          ))}
                       </div>
 
                       <div className="col-5 col-lg-3">
-                        <Link to={`/product/${item.product}`}>{item.name}</Link>
+                        <Link to={`/api/product/${item._id}`}>{item.name}</Link>
                       </div>
 
                       <div className="col-4 col-lg-2 mt-4 mt-lg-0">
@@ -142,22 +132,15 @@ export default function CartData() {
                 <p>
                   Subtotal:{" "}
                   <span className="order-summary-values">
-                    {items.reduce(
-                      (acc, item) => acc + Number(item.quantity),
-                      0
-                    )}{" "}
+                    {cartItems.reduce((acc, item) => acc + Number(quantity), 0)}{" "}
                     (Units)
                   </span>
                 </p>
                 <p>
                   Est. total:{" "}
                   <span className="order-summary-values">
-                    $
-                    {items
-                      .reduce(
-                        (acc, item) => acc + item.quantity * item.price,
-                        0
-                      )
+                    {cartItems
+                      .reduce((acc, item) => acc + quantity * item.price, 0)
                       .toFixed(2)}
                   </span>
                 </p>

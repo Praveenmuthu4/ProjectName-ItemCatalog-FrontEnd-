@@ -1,7 +1,5 @@
 import React, { createContext, useEffect, useReducer } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { API } from "../../global";
-import { useParams } from "react-router-dom";
 
 const initialState = {
   isCartOpen: false,

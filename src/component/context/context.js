@@ -22,6 +22,15 @@ const cartReducer = (state, action) => {
   }
 };
 
+export const removeFromCart = (dispatch, productId) => {
+  return dispatch({
+    type: "REMOVE_FROM_CART",
+    payload: {
+      productId: productId,
+    },
+  });
+};
+
 const CartProviderFunction = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, {
     cartItems: [],
