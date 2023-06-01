@@ -1,13 +1,11 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderData from "../Layout/HeaderData";
-import { CartDispatchContext, toggleCartPopup } from "../context/cartContext";
 import axios from "axios";
 import { API } from "../../global";
 import { useCartDispatch, useCartState } from "../context/context";
 
 export default function CartData() {
-  const dispatch = useContext(CartDispatchContext);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -25,7 +23,7 @@ export default function CartData() {
   };
 
   const handleProceedCheckout = () => {
-    toggleCartPopup(dispatch);
+    // toggleCartPopup(dispatch);
     navigate("/checkout");
   };
 

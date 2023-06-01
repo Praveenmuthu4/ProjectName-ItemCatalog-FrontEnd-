@@ -6,30 +6,26 @@ import Header from "./component/Layout/Header";
 import ViewProduct from "./component/Product/ViewProduct";
 import CartData from "./component/cart/CartData";
 import AuthProvider from "./component/context/authContext";
-import CartProvider from "./component/context/cartContext";
 import { CartProviderFunction } from "./component/context/context";
+import Login from "./component/User/Login";
 
 function App() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <CartProviderFunction>
-          <div className="App">
-            <Header />
-            <div className="container container-fluid">
-              <Routes>
-                <Route path="/" element={<Home />}></Route>
-                <Route
-                  path="/api/product/:id"
-                  element={<ViewProduct />}
-                ></Route>
-                <Route path="/cart" element={<CartData />}></Route>
-              </Routes>
-            </div>
-            <Footer />
+      <CartProviderFunction>
+        <div className="App">
+          <Header />
+          <div className="container container-fluid">
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/api/product/:id" element={<ViewProduct />}></Route>
+              <Route path="/cart" element={<CartData />}></Route>
+              <Route path="/login" element={<Login />}></Route>
+            </Routes>
           </div>
-        </CartProviderFunction>
-      </CartProvider>
+          <Footer />
+        </div>
+      </CartProviderFunction>
     </AuthProvider>
   );
 }

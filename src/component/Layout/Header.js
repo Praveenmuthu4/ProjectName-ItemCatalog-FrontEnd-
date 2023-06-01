@@ -34,9 +34,9 @@ export default function Header() {
         </div>
 
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-          <button className="btn" id="login_btn">
+          <Link to="/login" className="btn ml-4" id="login_btn">
             Login
-          </button>
+          </Link>
 
           <Link to="/cart" style={{ textDecoration: "none" }}>
             <span id="cart" className="ml-3">
