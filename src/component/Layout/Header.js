@@ -34,7 +34,7 @@ export default function Header() {
         </div>
 
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-          <Link to="/login" className="btn ml-4" id="login_btn">
+          <Link to="/api/login" className="btn ml-4" id="login_btn">
             Login
           </Link>
 
