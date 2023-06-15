@@ -1,17 +1,51 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import HeaderData from "../Layout/HeaderData";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, resetPassword } from "../actions/authActions";
+import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import Loader from "../Layout/Loader";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { error, success } = useSelector((state) => state.forgotPassword);
+
+  const { token } = useParams();
+
+  useEffect(() => {
+    if (success) {
+      console.log("Password updated successfully"); // Add this line
+      toast.success("Password updated successfully");
+      navigate("/api/login");
+    }
+
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+  }, [dispatch, error, success, navigate]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.set("password", password);
+    formData.set("confirmPassword", confirmPassword);
+
+    dispatch(resetPassword(token, formData));
+  };
+
   return (
     <Fragment>
+      <ToastContainer position="bottom-center" autoClose={1000} />
       <HeaderData title={"New Password Reset"} />
-
       <div className="row wrapper">
         <div className="col-10 col-lg-5">
-          <form className="shadow-lg">
-            {/* onSubmit={submitHandler} */}
+          <form className="shadow-lg" onSubmit={submitHandler}>
             <h1 className="mb-3">New Password</h1>
 
             <div className="form-group">

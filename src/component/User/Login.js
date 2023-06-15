@@ -1,19 +1,45 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import HeaderData from "../Layout/HeaderData";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../context/userContext";
+import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Layout/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, loginRequest } from "../actions/authActions";
 
 export default function Login() {
-  const { loading, handleLogin } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { isAuthenticated, error, loading } = useSelector(
+    (state) => state.auth
+  );
+
+  const redirect = window.location.search
+    ? window.location.search.split("=")[1]
+    : "/api/me";
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirect);
+    }
+
+    if (error) {
+      dispatch(clearErrors());
+    }
+  }, [dispatch, isAuthenticated, error, navigate, redirect]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleLogin(email, password);
+    dispatch(loginRequest(email, password))
+      .then(() => {
+        navigate(redirect);
+      })
+      .catch((error) => {
+        console.log("Login error:", error);
+      });
   };
-
   return (
     <Fragment>
       <HeaderData title={"Login"} />
