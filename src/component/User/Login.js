@@ -1,9 +1,11 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import HeaderData from "../Layout/HeaderData";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Layout/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, loginRequest } from "../actions/authActions";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,9 +18,7 @@ export default function Login() {
     (state) => state.auth
   );
 
-  const redirect = window.location.search
-    ? window.location.search.split("=")[1]
-    : "/api/me";
+  const redirect = error ? "/api/login" : "/api/me";
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -26,23 +26,22 @@ export default function Login() {
     }
 
     if (error) {
+      toast.error(error);
       dispatch(clearErrors());
     }
   }, [dispatch, isAuthenticated, error, navigate, redirect]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginRequest(email, password))
-      .then(() => {
-        navigate(redirect);
-      })
-      .catch((error) => {
-        console.log("Login error:", error);
-      });
+    dispatch(loginRequest(email, password)).then(() => {
+      navigate(redirect);
+    });
   };
+
   return (
     <Fragment>
       <HeaderData title={"Login"} />
+      <ToastContainer />
       {loading ? (
         <Loader />
       ) : (

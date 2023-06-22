@@ -32,6 +32,9 @@ import {
 } from "../constants/userConstants";
 
 export const loginRequest = (email, password) => async (dispatch) => {
+  let timeoutId;
+  const TIMEOUT_DURATION = 10000;
+
   try {
     dispatch({ type: LOGIN_REQUEST });
 
@@ -41,22 +44,31 @@ export const loginRequest = (email, password) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(
-      `${API}/api/login`,
-      { email, password },
-      config
-    );
+    const { data } = await Promise.race([
+      axios.post(`${API}/api/login`, { email, password }, config),
+      new Promise((_, reject) => {
+        timeoutId = setTimeout(() => {
+          reject(new Error("Login request timed out"));
+        }, TIMEOUT_DURATION);
+      }),
+    ]);
 
-    localStorage.setItem("token", data.token);
+    clearTimeout(timeoutId);
 
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: data.user,
-    });
+    if (data.success) {
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data.user,
+      });
+    } else {
+      throw new Error("Incorrect email or password");
+    }
   } catch (error) {
+    clearTimeout(timeoutId);
+
     dispatch({
       type: LOGIN_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data?.message || error.message,
     });
   }
 };
